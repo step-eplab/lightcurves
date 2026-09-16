@@ -107,37 +107,6 @@ for ym_i in ymu:
 
 
 
-
-
-'''
-dir_RLC = '/home/fedora/astronomy/STEP/main/data/F5/LC/RLC/'
-os.mkdir(dir_RLC)
-
-
-
-print('\n            RLC_month_obj ---> RLC_obj            \n')
-for ym_i in ymu:
-    Mags = np.load(dir_Mags + f'Mags_{ym_i}.npy', allow_pickle=True).tolist()
-    JD = np.load(dir_JD + f'JD_{ym_i}.npy', allow_pickle=True).tolist()
-    
-    lc_list = pd.Series(os.listdir(dir_RLC))
-    
-    for g_inx in Mags:
-        name = 'RLC_' + str(g_inx) + '.csv'
-        if name in lc_list:
-            RLC = np.load(dir_RLC + name)            
-        else:
-            RLC = np.array([[], []])
-        mag = Mags[g_inx]
-        u = ~np.isnan(mag)
-        if sum(u) > 0:
-            RLC_add = np.array([JD[u], mag[u]]).T
-            RLC = np.concatenate((RLC, RLC_add))
-            
-            
-'''
-
-
 '''
 Stat = D.sum(axis=1)
 
