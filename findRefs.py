@@ -12,11 +12,13 @@ import sys
 import numpy as np
 import pandas as pd
 
-from funcs import readConfig, getGInxLC, getRLC, sigma_clip
+from astropy.stats import sigma_clip
+
+from funcs import readConfig, getGInxLC, getRLC
     
 if len(sys.argv)>1:
     config_name = sys.argv[1]
-else:
+else:   
     config_name = 'configs/createCLC_F5.json'
 #############################################################
 # Preparation
@@ -102,7 +104,7 @@ plt.plot(F.loc[G_st0,'ra'], F.loc[G_st0,'dec'], '.')
 
 def get_K(g_inx, dir_RLC, JD):
     f = getRLC(dir_RLC, g_inx, JD)
-    f = sigma_clip(f, 3, 1)
+    f = sigma_clip(f, sigma=3, maxiters=1)
     u_fin = np.isfinite(f)
     JDfu_i = np.unique(np.floor(JD[u_fin]))
     if len(JDfu_i)>0:

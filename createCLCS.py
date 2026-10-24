@@ -8,7 +8,7 @@ Created on Fri Oct 23 10:02:05 2026
 import os
 import numpy as np
 import pandas as pd
-from funcs import readConfig, getGInxLC, getRLC, sigma_clip, parallel_map
+from funcs import readConfig, getGInxLC, getRLC, parallel_map
 
 import sys
 
@@ -17,7 +17,7 @@ JDx = {2460645:[0, 0.398603, 1],
     
 def get_K(g_inx, dir_RLC, JD):
     f = getRLC(dir_RLC, g_inx, JD)
-    f = sigma_clip(f, 3, 1)
+    f = sigma_clip(f, sigma=3, maxiters=1)
     u_fin = np.isfinite(f)
     JDfu_i = np.unique(np.floor(JD[u_fin]))
 
@@ -47,8 +47,6 @@ def get_K(g_inx, dir_RLC, JD):
 
 
 
-
-import matplotlib.pyplot as plt
 def get_Refs_jd(g_inx, N=3):
     # N%2=0
     jdf = K_df[g_inx].dropna().index
@@ -56,8 +54,7 @@ def get_Refs_jd(g_inx, N=3):
     G_br_i0 = G_br[~np.isin(G_br, g_inx)]
 
     mag0 = getRLC(dir_RLC, g_inx, JD)
-    mag0 = sigma_clip(mag0, 5, 1)
-    
+    mag0 = sigma_clip(mag0, sigma=5, maxiters=1)
     Y0 = [[] for _ in range(N)]
     Y1 = [[] for _ in range(N)]
     JD_i = []
@@ -110,7 +107,7 @@ def get_Refs_jd(g_inx, N=3):
             mag_st_jd = getRLC(dir_RLC, g_st, JD)[u_jd]
             dm_jd = mag_jd - mag_st_jd
             ### detrending
-            y = sigma_clip(dm_jd.copy(), 1, 3)
+            y = sigma_clip(dm_jd, sigma=1, maxiters=3)
             u_fin = np.isfinite(y)
             y = y[u_fin]
             x = t[u_fin]

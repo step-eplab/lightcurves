@@ -13,13 +13,13 @@ def calibrate(g_inx):
     for g_st in sts:
         f = getRLC(dir_RLC, g_st, JD)
         df = f - f0
-        df = sigma_clip(df, 5, 1)
+        df = sigma_clip(df, sigma=5, maxiters=1)
         u_nan = np.isnan(df)
         for jd in JDfu:
             u_jd = JDf==jd
             y = df[u_jd & (~u_nan)]
             x = t0[u_jd & (~u_nan)]
-            y = sigma_clip(y, 1, 3)
+            y = sigma_clip(y, sigma=1, maxiters=3)
             
             u = ~np.isnan(y)
             if np.sum(u)>10:

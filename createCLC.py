@@ -109,17 +109,11 @@ plt.plot(F.ra, F.dec, '.')
 plt.plot(F.loc[G_st0,'ra'], F.loc[G_st0,'dec'], '.')
 '''
 
-def sigma_clip(y, lvl=3, n=1):
-    med = np.nanmedian(y)
-    std = np.nanstd(y)
-    u = np.zeros(len(y), dtype=bool)
-    for i in range(n):
-        u |= abs(y - med) > lvl * std
-    y[u] = np.nan
-    return y
+from astropy.stats import sigma_clip
+
 def get_K(g_inx, dir_RLC, JD):
     f = getRLC(dir_RLC, g_inx, JD)
-    f = sigma_clip(f, 3, 1)
+    f = sigma_clip(f, sigma=3, maxiters=1)
     u_fin = np.isfinite(f)
     JDfu_i = np.unique(np.floor(JD[u_fin]))
     if len(JDfu_i)>0:
@@ -238,13 +232,13 @@ def calibrate(g_inx):
     for g_st in sts:
         f = getRLC(dir_RLC, g_st, JD)
         df = f - f0
-        df = sigma_clip(df, 5, 1)
+        df = sigma_clip(df, sigma=5, maxiters=1)
         u_nan = np.isnan(df)
         for jd in JDfu:
             u_jd = JDf==jd
             y = df[u_jd & (~u_nan)]
             x = t0[u_jd & (~u_nan)]
-            y = sigma_clip(y, 1, 3)
+            y = sigma_clip(y, sigma=1, maxiters=3)
             
             u = ~np.isnan(y)
             if np.sum(u)>10:
