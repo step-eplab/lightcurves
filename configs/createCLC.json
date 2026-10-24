@@ -1,0 +1,16 @@
+{
+"dir_LC": "/home/fedora/astronomy/STEP/main/results/lightcurves/V7/F4/RLC/",
+"dir_res": "/home/fedora/astronomy/STEP/main/results/lightcurves/V7/F4/CLC/",
+"cat_path": "/home/fedora/astronomy/STEP/main/results/catalogs/GAIA/F4.list",
+"refs_path": "/home/fedora/astronomy/STEP/main/results/catalogs/refstars/Refs_F4.csv",
+
+"st_mag_max": 14.5,
+"st_W_quantile": 0.9,
+"st_ro_min": 0.005,
+
+"G_st_del": [4301, 5170, 6828, 7027, 7039, 7147, 7694, 7922, 10173, 10744],
+
+"field": "F4",
+"ver_LC": "V7"
+
+}
